@@ -1,0 +1,199 @@
+'''
+from gemini import *
+from chatgbt import * 
+'''
+import customtkinter as ctk
+import tkinter
+from tkinter import filedialog
+
+
+# ==================================================== variables ===================================================================
+WIN_WIDTH = 600
+WIN_HEIGHT = 500
+main_color = "#000066"
+main_font = "segoe print"
+# ================================================== window settings ============================================================= 
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("blue")
+root = ctk.CTk()
+root.title("Chatbot")
+root.geometry(f"{WIN_WIDTH}x{WIN_HEIGHT}")
+root.resizable(False,False)
+
+# ========================================================= functions  =====================================================================
+def close_app():
+    root.quit()
+def on_shift_enter(event):
+    user_input_massage.insert(ctk.END, '\n')
+    return "break" # ignore Enter key press
+
+def on_ctrl_backspace(event):
+    user_input_massage.delete("1.0", ctk.END)
+    return "break"
+
+def on_enter(event=None):
+    user_input_var = user_input_massage.get("1.0", ctk.END)
+    print(user_input_var)
+    user_input_massage.delete("1.0", ctk.END)
+    # where the input will go
+
+# ========================================================= frames  =====================================================================
+# main_frames -----------------
+top_frame = ctk.CTkFrame(
+    master=root,
+    width=WIN_WIDTH,
+    height=(WIN_HEIGHT*(1/12)),
+    border_width=2,
+    border_color='gray'
+)
+top_frame.pack()
+
+body_frame = ctk.CTkScrollableFrame(
+    master=root,
+    width=WIN_WIDTH,
+    height=(WIN_HEIGHT*(9/12)),
+    border_width=2,
+    border_color='gray'
+)
+body_frame.pack()
+
+buttom_frame = ctk.CTkFrame(
+    master=root,
+    width=WIN_WIDTH,
+    height=(WIN_HEIGHT*(2/12)),
+
+    border_width=2,
+    border_color='gray'
+)
+buttom_frame.pack()
+#-------------------------------------
+# widgets frame top --------------------
+exit_button_frame = ctk.CTkFrame(
+    master=top_frame,
+    width=(WIN_WIDTH*(1/12)),
+    height=(WIN_HEIGHT*(1/12)),
+
+    border_color='gray'
+)
+exit_button_frame.pack(side="left")
+
+
+chosen_ai_frame = ctk.CTkFrame(
+    master=top_frame,
+    width=(WIN_WIDTH*(5/12)),
+    height=(WIN_HEIGHT*(1/12)),
+    corner_radius=50,
+    border_color='gray'
+)
+chosen_ai_frame.pack(side="left")
+
+options_frame = ctk.CTkFrame(
+    master=top_frame,
+    width=(WIN_WIDTH*(4/12)),
+    height=(WIN_HEIGHT*(1/12)),
+    border_color='gray'
+)
+options_frame.pack(side="left")
+
+bot_confirm_button_frame = ctk.CTkFrame(
+    master=top_frame,
+    width=(WIN_WIDTH*(2/12)),
+    height=(WIN_HEIGHT*(1/12)),
+    border_color='gray'
+)
+bot_confirm_button_frame.pack(side="left")
+# -------------------------------------
+# widgets frame buttom ----------------
+
+user_entry_frame = ctk.CTkFrame(
+    master=buttom_frame,
+    width=(WIN_WIDTH*(10/12)),
+    height=(WIN_HEIGHT*(2/12)),
+    border_color='gray'
+)
+user_entry_frame.pack(side="left")
+
+user_entry_send_frame = ctk.CTkFrame(
+    master=buttom_frame,
+    width=(WIN_WIDTH*(2/12)),
+    height=(WIN_HEIGHT*(2/12)),
+    border_color='gray'
+)
+user_entry_send_frame.pack(side="left")
+# -------------------------------------------
+# top widgets (option menu, chosen AI label, quit button, etc...) ================
+quit_button = ctk.CTkButton(
+    master=exit_button_frame,
+    text="Quit",
+    width=(WIN_WIDTH*(1/12)),
+    height=(WIN_HEIGHT*(1/12)),
+    fg_color='red',
+    border_color='gray',
+    corner_radius=50,
+    font=(main_font, 16),
+    command=close_app
+)
+quit_button.pack()
+
+chosen_ai_label = ctk.CTkLabel(
+    master=chosen_ai_frame,
+    width=(WIN_WIDTH*(5/12)),
+    height=(WIN_HEIGHT*(1/12)),
+    corner_radius=50,
+    font=(main_font, 16),
+    text='chat-gpt'
+)
+chosen_ai_label.pack()
+
+options_ai_combobox = ctk.CTkComboBox(
+    master=options_frame,
+    width=(WIN_WIDTH*(4/12)),
+    height=(WIN_HEIGHT*(1/12)),
+    corner_radius=50,
+    font=(main_font, 16),
+    values=['chat-gpt', 'gemini'],
+    state='readonly'
+)
+options_ai_combobox.pack()
+
+bot_confirm_button = ctk.CTkButton(
+    master=bot_confirm_button_frame,
+    text="✓",
+    width=(WIN_WIDTH*(2/12)),
+    height=(WIN_HEIGHT*(1/12)),
+    corner_radius=50,
+    font=('verdana',16)
+)
+bot_confirm_button.pack()
+# -------------------------------------------
+# body widgets ------------------------
+# ------------------------------------------
+# buttom widgets ---------------------------
+user_input_massage = ctk.CTkTextbox(
+    master=user_entry_frame,
+    width=(WIN_WIDTH*(10/12)),
+    height=(WIN_HEIGHT*(2/12)),
+    font=(main_font, 16)
+)
+user_input_massage.pack()
+
+user_input_send_button = ctk.CTkButton(
+    master=user_entry_send_frame,
+    text="✓",
+    width=(WIN_WIDTH*(2/12)),
+    height=(WIN_HEIGHT*(2/12)),
+    corner_radius=50,
+    font=(main_font, 16),
+    command=on_enter
+)
+user_input_send_button.pack()
+# -----------------------------------------
+# keyboard bindings -------------------------
+user_input_massage.bind("<Shift-Return>", on_shift_enter)
+user_input_massage.bind("<Return>" , on_enter)
+user_input_massage.bind("<Return>", lambda event: "break")
+user_input_massage.bind("<Control-BackSpace>", on_ctrl_backspace)
+
+
+
+root.mainloop()
