@@ -1,5 +1,6 @@
 import customtkinter as ctk
-from gemini import *
+from multipleAi.gemini import *
+chat = None
 class App(ctk.CTk):
     def __init__(self, WIDTH, HEIGHT, main_color="blue", main_font="segoe print"):
         self.WIDTH = WIDTH
@@ -114,7 +115,6 @@ class App(ctk.CTk):
         # =================== keyboard bindings ===========================
         self.user_input_massage.bind("<Shift-Return>", self.on_shift_enter)
         self.user_input_massage.bind("<Return>" , self.on_enter)
-        self.user_input_massage.bind("<Return>", lambda event: "break")
         self.user_input_massage.bind("<Control-BackSpace>", self.on_ctrl_backspace)
 
     # =========================== methods =========================
@@ -132,6 +132,9 @@ class App(ctk.CTk):
     
 
     def on_enter(self,event=None):
+        if chat is None:
+            print('choose the bot first!!')
+            return "break"
         user_input_var = self.user_input_massage.get("1.0", ctk.END)
         print(user_input_var)
 
@@ -152,6 +155,7 @@ class App(ctk.CTk):
         ).grid(row=self.v*2+1, column=0, sticky=ctk.W)
 
         self.v += 1
+        return "break"
         
 
     def on_top_button_clicked(self):

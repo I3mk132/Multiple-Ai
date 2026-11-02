@@ -1,6 +1,9 @@
 from characterai import PyCAI
+from dotenv import load_dotenv
+import os
 
-client = PyCAI('f3b9a7830aa2903cfbd1db5ad3095234d0b68b3e')
+load_dotenv()
+client = PyCAI(os.getenv('CAI_TOKEN'))
 
 char = input('Enter CHAR: ')
 

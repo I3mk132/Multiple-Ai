@@ -41,7 +41,6 @@ def get_chosen_path():  # getting the old file path  from the user
     if file_path:
         print("selected file path: " + file_path)
         return file_path
-    root.mainloop()
 
 # tkinter window for the filedialog
 
@@ -110,7 +109,7 @@ def start_conversation(history):
     time = get_the_time()
     print(history)
     # starting the chat
-    model = genai.GenerativeModel('gemini-1.0-pro',
+    model = genai.GenerativeModel('gemini-3.6-flash',
                                 generation_config=generation_config,
                                 safety_settings=safety_settings,
                                 )
@@ -128,7 +127,7 @@ def conversation_loop(user_input, new, chat, time, old_chat_path):
     print(f"Bot: {response.text}")
     print('\n')
     if new:
-        the_new_saving_text_file = f'saved_chats/saved_chat {time}.json'
+        the_new_saving_text_file = f'multipleAi/saved_chats/saved_chat {time}.json'
         if os.path.exists(the_new_saving_text_file):
                 pass
         else:
